@@ -5,13 +5,19 @@ import Content from "./Content";
 import Footer from "./Footer";
 import AddItem from "./AddItem";
 import SearchItem from "./SearchItem";
-function App() {
-  const [items, setItems] = useState(
-    JSON.parse(localStorage.getItem("todo_list"))
-  );
 
+// Example static JSON data
+const initialItems = [
+  { id: 1, checked: false, item: "Buy groceries" },
+  { id: 2, checked: true, item: "Read a book" },
+  { id: 3, checked: false, item: "Go for a walk" }
+];
+
+function App() {
+  const [items, setItems] = useState(initialItems);
   const [newItem, setNewItem] = useState("");
   const [search, setSearch] = useState("");
+
   const addItem = (item) => {
     const id = items.length ? items[items.length - 1].id + 1 : 1;
     const addNewItem = {
@@ -21,28 +27,27 @@ function App() {
     };
     const listItems = [...items, addNewItem];
     setItems(listItems);
-    localStorage.setItem("todo_list", JSON.stringify(listItems));
   };
+
   const handleCheck = (id) => {
     const listItems = items.map((item) =>
       item.id === id ? { ...item, checked: !item.checked } : item
     );
     setItems(listItems);
-    localStorage.setItem("todo_list", JSON.stringify(listItems));
   };
+
   const handleDelete = (id) => {
     const listItems = items.filter((item) => item.id !== id);
     setItems(listItems);
-    localStorage.setItem("todo_list", JSON.stringify(listItems));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!newItem) return;
-    console.log(newItem);
     addItem(newItem);
     setNewItem("");
   };
+
   return (
     <div className="App">
       <Header title="To do List" />
